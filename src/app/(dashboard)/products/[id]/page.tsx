@@ -1,7 +1,9 @@
-export default function ProductDetailPage () {
-  return (
-    <div>
-      <h1>Product Detail</h1>
-    </div>
-  )
+interface Params {
+  id: string;
 }
+
+const ProductDetailsPage = ({ params: { id } }: { params: Params }) => {
+  return <h1>Product ID: {id}</h1>;
+};
+
+export default ProductDetailsPage;
