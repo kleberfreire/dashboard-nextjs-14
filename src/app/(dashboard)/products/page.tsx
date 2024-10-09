@@ -8,14 +8,14 @@ import Header, {
   HeaderSubtitle,
   HeaderTitle,
 } from '../_components/header'
-import { db } from '@/lib/prisma'
+
+import { getProducts } from '@/data-acess/product/get-products'
 
 // Essa página será montada uma vez e reutilizada (SSG), podendo ser incrementada de forma regenerativa (ISR)
 export const dynamic = 'force-static'
 
 const ProductsPage = async () => {
-  // const products = await getProducts()
-  const products = await db.product.findMany({})
+  const products = await getProducts()
   return (
     <div className="m-8 w-full space-y-8 overflow-auto rounded-lg bg-white p-8">
       <Header>
@@ -27,7 +27,10 @@ const ProductsPage = async () => {
           <AddProductButton />
         </HeaderRight>
       </Header>
-      <DataTable columns={productTableColumns} data={products} />
+      <DataTable
+        columns={productTableColumns}
+        data={JSON.parse(JSON.stringify(products))}
+      />
     </div>
   )
 }
