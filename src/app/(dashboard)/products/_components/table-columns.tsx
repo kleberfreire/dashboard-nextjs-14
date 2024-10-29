@@ -5,6 +5,7 @@ import { ColumnDef } from '@tanstack/react-table'
 // import { ProductDto } from '@/data-access/product/get-products'
 import ProductStatusBadge from '@/components/product-status-badge'
 import type { Product } from '@prisma/client'
+import ProductTableDropdownMenu from './table-dropdown-menu'
 
 export const productTableColumns: ColumnDef<Product>[] = [
   {
@@ -36,6 +37,6 @@ export const productTableColumns: ColumnDef<Product>[] = [
   {
     accessorKey: 'actions',
     header: 'Ações',
-    // cell: (row) => <ProductTableDropdownMenu product={row.row.original} />,
+    cell: (row) => <ProductTableDropdownMenu product={row.row.original} />,
   },
 ]

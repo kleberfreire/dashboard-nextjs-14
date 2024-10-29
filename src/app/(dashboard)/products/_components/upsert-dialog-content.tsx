@@ -1,5 +1,6 @@
 'use client'
 
+import { createProduct } from '@/actions/product/create-product'
 import {
   upsertProductSchema,
   type UpsertProductSchema,
@@ -60,8 +61,15 @@ const UpsertProductDialogContent = ({
     },
   })
 
-  const onSubmit = (data: UpsertProductSchema) => {
+  const onSubmit = async (data: UpsertProductSchema) => {
     // executeUpsertProduct({ ...data, id: defaultValues?.id })
+    try {
+      upsertProductSchema.parse(data)
+      await createProduct(data)
+      setDialogIsOpen(false)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const isEditing = !!defaultValues
