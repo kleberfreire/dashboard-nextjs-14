@@ -1,6 +1,6 @@
 'use client'
 
-import { createProduct } from '@/actions/product/create-product'
+import { upsertProduct } from '@/actions/product/upsert-product/ index'
 import {
   upsertProductSchema,
   type UpsertProductSchema,
@@ -30,16 +30,17 @@ import { Loader2Icon } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
 import { useForm } from 'react-hook-form'
 import { NumericFormat } from 'react-number-format'
-import { toast } from 'sonner'
 
 interface UpsertProductDialogContentProps {
   defaultValues?: UpsertProductSchema
   setDialogIsOpen: Dispatch<SetStateAction<boolean>>
+  onSuccess?: () => void
 }
 
 const UpsertProductDialogContent = ({
   defaultValues,
   setDialogIsOpen,
+  onSuccess,
 }: UpsertProductDialogContentProps) => {
   // const { execute: executeUpsertProduct } = useAction(upsertProduct, {
   //   onSuccess: () => {
@@ -65,7 +66,8 @@ const UpsertProductDialogContent = ({
     // executeUpsertProduct({ ...data, id: defaultValues?.id })
     try {
       upsertProductSchema.parse(data)
-      await createProduct(data)
+      await upsertProduct({ ...data, id: defaultValues?.id })
+      onSuccess?.()
       setDialogIsOpen(false)
     } catch (error) {
       console.error(error)

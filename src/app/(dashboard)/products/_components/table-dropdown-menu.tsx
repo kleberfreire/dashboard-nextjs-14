@@ -19,7 +19,8 @@ import { useState } from 'react'
 // import DeleteProductDialogContent from './delete-dialog-content'
 import UpsertProductDialogContent from './upsert-dialog-content'
 import type { Product } from '@prisma/client'
-import { DeleteProductDialogContent } from './delete-product-dialog-content'
+import { DeleteProductDialogContent } from './delete-dialog-content'
+
 // import { ProductDto } from '@/data-access/product/get-products'
 
 interface ProductTableDropdownMenuProps {
@@ -72,6 +73,7 @@ const ProductTableDropdownMenu = ({
             stock: product.stock,
           }}
           setDialogIsOpen={setEditDialogIsOpen}
+          onSuccess={() => setEditDialogIsOpen(false)}
         />
         <DeleteProductDialogContent productId={product.id} />
       </Dialog>
