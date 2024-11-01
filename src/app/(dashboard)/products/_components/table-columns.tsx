@@ -6,6 +6,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import ProductStatusBadge from '@/components/product-status-badge'
 import type { Product } from '@prisma/client'
 import ProductTableDropdownMenu from './table-dropdown-menu'
+import { formatCurrency } from '@/helpers/format-money'
 
 export const productTableColumns: ColumnDef<Product>[] = [
   {
@@ -17,10 +18,7 @@ export const productTableColumns: ColumnDef<Product>[] = [
     header: 'Valor unitário',
     cell: (row) => {
       const product = row.row.original
-      return Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      }).format(Number(product.price))
+      return formatCurrency(Number(product.price))
     },
   },
   {
