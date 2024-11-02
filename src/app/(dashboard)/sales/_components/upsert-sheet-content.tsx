@@ -36,6 +36,7 @@ import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
 import type { Product } from '@prisma/client'
 import { formatCurrency } from '@/helpers/format-money'
+import { SalesTableDropdownMenu } from './table-dropdown-menu'
 
 const formSchema = z.object({
   productId: z.string().uuid({
@@ -115,6 +116,12 @@ const UpsertSheetContent = ({
     })
   }
 
+  const removeProduct = (productId: string) => {
+    setSelectedProduct((prev) => {
+      return prev.filter((product) => product.id !== productId)
+    })
+  }
+
   const productTotal = React.useMemo(() => {
     return selectedProduct.reduce(
       (acc, product) => acc + product.price * product.quantity,
@@ -174,13 +181,14 @@ const UpsertSheetContent = ({
         </form>
       </Form>
       <Table>
-        <TableCaption>Lista de produtos adicionados à venda</TableCaption>
+        <TableCaption>Lista de produtos adicionados à venda.</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Produto</TableHead>
             <TableHead>Quantidade</TableHead>
             <TableHead>Preço unitário</TableHead>
             <TableHead>Total</TableHead>
+            <TableHead>Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -193,11 +201,17 @@ const UpsertSheetContent = ({
                 <TableCell>
                   {formatCurrency(product.price * product.quantity)}
                 </TableCell>
+                <TableCell>
+                  <SalesTableDropdownMenu
+                    product={product}
+                    onDelete={removeProduct}
+                  />
+                </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={4} className="py-5 text-center">
+              <TableCell colSpan={5} className="py-5 text-center">
                 Nenhum produto Selecionado
               </TableCell>
             </TableRow>
@@ -205,7 +219,7 @@ const UpsertSheetContent = ({
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
+            <TableCell colSpan={4}>Total</TableCell>
             <TableCell>{formatCurrency(productTotal)}</TableCell>
           </TableRow>
         </TableFooter>
