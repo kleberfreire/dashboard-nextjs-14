@@ -93,6 +93,16 @@ const UpsertSheetContent = ({
       )
 
       if (existingProduct) {
+        const productIsOutOfStock =
+          existingProduct.quantity + data.quantity > productInProducts.stock
+        if (productIsOutOfStock) {
+          form.setError('quantity', {
+            type: 'manual',
+            message: 'Quantidade indisponível em estoque.',
+          })
+          return prev
+        }
+        form.reset()
         return prev.map((product) => {
           if (product.id === productInProducts.id) {
             return {
@@ -103,6 +113,15 @@ const UpsertSheetContent = ({
           return product
         })
       } else {
+        const productIsOutOfStock = data.quantity > productInProducts.stock
+        if (productIsOutOfStock) {
+          form.setError('quantity', {
+            type: 'manual',
+            message: 'Quantidade indisponível em estoque.',
+          })
+          return prev
+        }
+        form.reset()
         return [
           ...prev,
           {
